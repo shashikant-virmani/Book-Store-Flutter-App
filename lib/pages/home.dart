@@ -1,8 +1,39 @@
+import 'dart:convert';
+
+import 'package:book_discovery/models/catalog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  
+  @override
+  State<HomePage> createState() => _HomePageState();
+
+}
+
+class _HomePageState extends State<HomePage> {
+
+  static List<BookData> books = [];
+
+  void _getBooks() async {
+    var catalogJson = await rootBundle.loadString("assets/files/catalog.json");
+    // print(catalogJson);
+    var decodedData = jsonDecode(catalogJson);
+    // print(decodedData);
+    // books = BookModel.getBooks();
+    books = List.from(decodedData["results"]).map<BookData>((book) => BookData.fromMap(book)).toList();
+    setState(() {
+      
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getBooks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,8 +41,41 @@ class HomePage extends StatelessWidget {
       appBar: appBar(),
       backgroundColor: const Color.fromARGB(255, 250, 208, 238),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _searchField()
+          _searchField(),
+          SizedBox(height: 30,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(padding: const EdgeInsets.only(left: 20),
+              child: Text('Books List',
+              style: TextStyle(
+                color: Colors.purple,
+                fontSize: 30,
+                fontWeight: FontWeight.bold
+              ),),),
+              SizedBox(height: 15,),
+              SizedBox(
+                height: 650,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView.builder(
+                    itemCount: books.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          leading: Image.network(books[index].formats["image/jpeg"]!),
+                          title: Text(books[index].title),
+                          subtitle: Text((index + 1).toString()),
+                        ),
+                      );
+                  }),
+                )
+              )
+
+            ],
+          )
         ],
       ),
     );
@@ -75,7 +139,7 @@ class HomePage extends StatelessWidget {
 
   AppBar appBar() {
     return AppBar(
-      title: Text('Book   Store',
+      title: Text('Book  Store',
       style: TextStyle(color: Colors.purple, fontSize: 34, fontWeight: FontWeight.bold),),
       backgroundColor: Colors.lightGreenAccent,
       elevation: 0.0,
@@ -113,4 +177,5 @@ class HomePage extends StatelessWidget {
       ],
     );
   }
+  
 }

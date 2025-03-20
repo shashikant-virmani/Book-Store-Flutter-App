@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Caveat'),
-      home: const HomePage(),
+      theme: ThemeData(fontFamily: 'GoudyBookletter1911'),
+      home: HomePage(),
     );
   }
 }
