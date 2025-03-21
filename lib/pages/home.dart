@@ -1,9 +1,11 @@
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:book_discovery/models/catalog.dart';
+import 'package:book_discovery/controller/pagination_controller.dart';
+// import 'package:book_discovery/models/catalog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,24 +17,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  static List<BookData> books = [];
+  late BookProvider bookProvider;
 
-  void _getBooks() async {
-    var catalogJson = await rootBundle.loadString("assets/files/catalog.json");
-    // print(catalogJson);
-    var decodedData = jsonDecode(catalogJson);
-    // print(decodedData);
-    // books = BookModel.getBooks();
-    books = List.from(decodedData["results"]).map<BookData>((book) => BookData.fromMap(book)).toList();
-    setState(() {
+  // static List<BookData> books = [];
+
+  // void _getBooks() async {
+  //   var catalogJson = await rootBundle.loadString("assets/files/catalog.json");
+  //   // print(catalogJson);
+  //   var decodedData = jsonDecode(catalogJson);
+  //   // print(decodedData);
+  //   // books = BookModel.getBooks();
+  //   books = List.from(decodedData["results"]).map<BookData>((book) => BookData.fromMap(book)).toList();
+  //   setState(() {
       
-    });
-  }
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    _getBooks();
+    bookProvider = BookProvider();
+    // _getBooks();
+  }
+
+  @override
+  void dispose() {
+    bookProvider.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,18 +71,41 @@ class _HomePageState extends State<HomePage> {
                 height: 650,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ListView.builder(
-                    itemCount: books.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          leading: Image.network(books[index].formats["image/jpeg"]!),
-                          title: Text(books[index].title),
-                          subtitle: Text((index + 1).toString()),
-                        ),
-                      );
-                  }),
+                  child: ChangeNotifierProvider(
+                    create: (context) => bookProvider..fetchBooks(),
+                    child: Consumer<BookProvider>(builder: (builder, provider, child){
+                      return NotificationListener(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !bookProvider.isLoading) {
+                            bookProvider.fetchBooks();
+                          }
+
+                          return false;
+                        },
+                    child: ListView.builder(
+                      itemCount: provider.books.length + (bookProvider.hasMore ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if(index == bookProvider.books.length) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        final book = bookProvider.books[index];
+                        return Card(
+                          child: ListTile(
+                            leading: Image.network(book.formats["image/jpeg"]!),
+                            title: Text(book.title),
+                            subtitle: Text((index + 1).toString()),
+                          ),
+                        );
+                    }
+                    )
+                    );
+                    }
+                  )
+                  // : Center(
+                  //   child: CircularProgressIndicator(),
+                  // ),
                 )
+              )
               )
 
             ],

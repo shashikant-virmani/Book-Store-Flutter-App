@@ -12,9 +12,9 @@ class BookData {
   final List<dynamic> bookshelves;
   final List<dynamic> languages;
   final dynamic copyright;
-  final String media_type;
+  final String mediaType;
   final Map<String, dynamic> formats;
-  final num download_count;
+  final num downloadCount;
 
   // "id": <number of Project Gutenberg ID>,
   // "title": <string>,
@@ -29,24 +29,24 @@ class BookData {
   // "formats": <Format>,
   // "download_count": <number
 
-  BookData({required this.id, required this.title, required this.subjects, required this.authors, required this.summaries, required this.translators, required this.bookshelves, required this.languages, required this.copyright, required this.media_type, required this.formats, required this.download_count});
+  BookData({required this.id, required this.title, required this.subjects, required this.authors, required this.summaries, required this.translators, required this.bookshelves, required this.languages, required this.copyright, required this.mediaType, required this.formats, required this.downloadCount});
   factory BookData.fromMap(Map<String, dynamic> map) { return
     BookData(id: map["id"], 
     title: map["title"],
      subjects: map["subjects"], 
     authors: map["authors"], summaries: map["summaries"], translators: map["translators"], 
-    bookshelves: map["bookshelves"], languages: map["languages"], copyright: map["copyright"], media_type: map["media_type"], 
-    formats: map["formats"], download_count: map["download_count"], 
+    bookshelves: map["bookshelves"], languages: map["languages"], copyright: map["copyright"], mediaType: map["media_type"], 
+    formats: map["formats"], downloadCount: map["download_count"], 
     );
   }
 }
 
 class Person {
-  final dynamic birth_year;
-  final dynamic death_year;
+  final dynamic birthYear;
+  final dynamic deathYear;
   final String name;
 
-  Person({required this.birth_year, required this.death_year, required this.name});
+  Person({required this.birthYear, required this.deathYear, required this.name});
 }
 
 // class Format {
