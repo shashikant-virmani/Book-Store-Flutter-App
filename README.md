@@ -2,6 +2,11 @@
 
 A new Flutter project.
 
+## App Preview
+
+[![Shashikant on YouTube](http://img.youtube.com/shorts/zS2Vz1TbDuo/0.jpg)](http://www.youtube.com/shorts/zS2Vz1TbDuo "Book Discovery App Demo - Flutter")
+
+
 ## Features implemented
 
 Book List Screen:
