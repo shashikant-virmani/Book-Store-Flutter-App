@@ -1,16 +1,20 @@
-# book_discovery
+# Book Discovery App
 
 A new Flutter project.
 
-## Getting Started
+## Features implemented
 
-This project is a starting point for a Flutter application.
+Book List Screen:
+   - Display a list of books with their titles and cover images.
+   - Allow users to scroll through the list of books.
+   - Add pagination so that when the user reaches the end of the screen, more  books should be loaded.
 
-A few resources to get you started if this is your first Flutter project:
+## Features to be implemented
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Book Detail Screen:
+   - When a user taps on a book item, navigate to a detail screen.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Optional Feature:
+   - Implement a search feature to find books by title, author, or other criteria.
+
+
